@@ -1,0 +1,12 @@
+[package]
+name = "wyvern"
+version = "0.1.0"
+edition = "2024"
+author = ["Laurent Gaches <laurent@l18.dev>"]
+license = "MIT"
+
+[dependencies]
+async-trait = "0.1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
