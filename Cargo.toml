@@ -2,11 +2,16 @@
 name = "wyvern"
 version = "0.1.0"
 edition = "2024"
-author = ["Laurent Gaches <laurent@l18.dev>"]
+authors = ["Laurent Gaches <laurent@l18.dev>"]
 license = "MIT"
 
 [dependencies]
 async-trait = "0.1"
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio"], optional = true }
+
+[features]
+default = []
+sqlx = ["dep:sqlx"]
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }

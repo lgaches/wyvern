@@ -25,11 +25,36 @@
 //!
 //! // Your implementation here
 //! ```
+//!
+//! ## Optional Features
+//!
+//! - **sqlx**: Provides adapters for SQLx with PostgreSQL support
+//!
+//! ```toml
+//! [dependencies]
+//! wyvern = { git = "https://github.com/lgaches/wyvern", branch = "main", features = ["sqlx"] }
+//! ```
+//!
+//! Example usage with SQLx:
+//!
+//! ```rust,ignore
+//! use wyvern::{FilterCriteria, Condition, SqlxAdapter, WyvernSqlxExt};
+//! use sqlx::PgPool;
+//!
+//! let pool = PgPool::connect("postgresql://...").await?;
+//! let criteria = FilterCriteria::new()
+//!     .with_condition(Condition::eq("status", "active".into()));
+//!
+//! let users: Vec<User> = pool.filter_entities("users", &criteria).await?;
+//! ```
 
 pub mod error;
 pub mod query;
 pub mod repository;
 pub mod transaction;
+
+#[cfg(feature = "sqlx")]
+pub mod adapters;
 
 pub use error::RepositoryError;
 pub use query::{
@@ -37,3 +62,6 @@ pub use query::{
 };
 pub use repository::{Queryable, Repository};
 pub use transaction::Transactional;
+
+#[cfg(feature = "sqlx")]
+pub use adapters::{SqlxAdapter, WyvernSqlxExt};
