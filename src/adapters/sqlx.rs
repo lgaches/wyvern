@@ -181,26 +181,24 @@ impl SqlxAdapter {
 }
 
 /// Extension trait for executing wyvern queries with SQLx
-#[async_trait::async_trait]
 pub trait WyvernSqlxExt {
     /// Execute a filter query and return all matching entities
-    async fn filter_entities<T>(
+    fn filter_entities<T>(
         &self,
         table_name: &str,
         criteria: &FilterCriteria,
-    ) -> Result<Vec<T>, sqlx::Error>
+    ) -> impl std::future::Future<Output = Result<Vec<T>, sqlx::Error>> + Send
     where
         T: for<'r> sqlx::FromRow<'r, sqlx::postgres::PgRow> + Unpin + Send;
 
     /// Count entities matching the criteria
-    async fn count_entities(
+    fn count_entities(
         &self,
         table_name: &str,
         criteria: &FilterCriteria,
-    ) -> Result<i64, sqlx::Error>;
+    ) -> impl std::future::Future<Output = Result<i64, sqlx::Error>> + Send;
 }
 
-#[async_trait::async_trait]
 impl WyvernSqlxExt for PgPool {
     async fn filter_entities<T>(
         &self,

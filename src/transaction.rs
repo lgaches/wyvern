@@ -1,10 +1,8 @@
 //! Transaction management traits
 
-use async_trait::async_trait;
 use std::error::Error;
 
 /// Trait for repositories that support transactional operations.
-#[async_trait]
 pub trait Transactional: Send + Sync {
     /// The transaction type used by this repository
     type Transaction: Send;
@@ -13,12 +11,19 @@ pub trait Transactional: Send + Sync {
     type Error: Error + Send + Sync;
 
     /// Begins a new transaction.
-    async fn begin_transaction(&self) -> Result<Self::Transaction, Self::Error>;
+    fn begin_transaction(
+        &self,
+    ) -> impl Future<Output = Result<Self::Transaction, Self::Error>> + Send;
 
     /// Commits the given transaction.
-    async fn commit_transaction(&self, transaction: Self::Transaction) -> Result<(), Self::Error>;
+    fn commit_transaction(
+        &self,
+        transaction: Self::Transaction,
+    ) -> impl Future<Output = Result<(), Self::Error>> + Send;
 
     /// Rolls back the given transaction.
-    async fn rollback_transaction(&self, transaction: Self::Transaction)
-    -> Result<(), Self::Error>;
+    fn rollback_transaction(
+        &self,
+        transaction: Self::Transaction,
+    ) -> impl Future<Output = Result<(), Self::Error>> + Send;
 }

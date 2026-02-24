@@ -7,7 +7,7 @@ A generic repository pattern implementation for Rust applications providing type
 - **Generic CRUD Operations**: Standard create, read, update, and delete operations
 - **Advanced Querying**: Filtering, sorting, pagination, and counting
 - **Transaction Support**: ACID-compliant transaction management
-- **Async-first**: Built with async/await using `async-trait`
+- **Async-first**: Built with native async/await
 - **Database Agnostic**: Works with any database backend
 - **Type Safe**: Leverages Rust's type system for compile-time safety
 - **SQLx Adapter** _(optional)_: Ready-to-use adapter for PostgreSQL via SQLx
@@ -21,7 +21,6 @@ Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
 wyvern = { git = "https://github.com/lgaches/wyvern",  branch = "main" }
-async-trait = "0.1"
 ```
 
 ### With SQLx Support
@@ -31,7 +30,6 @@ To use the built-in SQLx adapter for PostgreSQL:
 ```toml
 [dependencies]
 wyvern = { git = "https://github.com/lgaches/wyvern", branch = "main", features = ["sqlx"] }
-async-trait = "0.1"
 sqlx = { version = "0.8", features = ["postgres", "runtime-tokio"] }
 tokio = { version = "1", features = ["full"] }
 ```
